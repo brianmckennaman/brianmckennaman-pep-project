@@ -14,4 +14,11 @@ public class AccountService {
     public AccountService(AccountDAO accountDAO){
         this.accountDAO = accountDAO;
     }
+
+    public Account registerAccount(Account account) {
+        Account newAccount = accountDAO.userRegistration(account);
+        return newAccount;
+    }
+
+    
 }

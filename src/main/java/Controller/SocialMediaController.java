@@ -31,6 +31,7 @@ public class SocialMediaController {
 
     public Javalin startAPI() {
         Javalin app = Javalin.create();
+        app.get("/accounts", this::userRegistrationHandler);
         app.get("/messages", this::getAllMessagesHandler);
         app.post("/messages", this::postMessageHandler);
 
@@ -41,15 +42,26 @@ public class SocialMediaController {
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
+    private void userRegistrationHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(context.body(), Account.class);
+        Account newAccount = accountService.registerAccount(account);
+        if(newAccount!=null) {
+            context.json(mapper.writeValueAsString(newAccount));
+        } else {
+            context.status(400);
+        }
+    }
+    
     private void getAllMessagesHandler(Context context) {
         List<Message> messages = messageService.getAllMessages();
         context.json(messages);
     }
 
-    private void postMessageHandler(Context context) {
+    private void postMessageHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(context.body(), Message.class);
-        Message postedMessage = messageService.postMessage(message);
+        Message postedMessage = messageService.addMessage(message);
         if(postedMessage!=null) {
             context.json(mapper.writeValueAsString(postedMessage));
         } else{
