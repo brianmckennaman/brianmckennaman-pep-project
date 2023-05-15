@@ -31,9 +31,11 @@ public class SocialMediaController {
 
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.post("/accounts", this::userRegistrationHandler);
+        app.post("/register", this::accountRegistrationHandler);
+        // app.post("/login", this:loginHandler);
         app.get("/messages", this::getAllMessagesHandler);
         app.get("/messages/{message_id}", this::getMessageByIdHandler);
+        // app.get("/messages/{posted_by}/messages", this::getAllMessagesByUserHandler);
         app.post("/messages", this::postMessageHandler);
         app.put("/messages/{message_id}", this::updateMessageHandler);
         // app.delete("/messages/{message_id}" this::deleteMessageHandler);
@@ -45,7 +47,7 @@ public class SocialMediaController {
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
-    private void userRegistrationHandler(Context context) throws JsonProcessingException {
+    private void accountRegistrationHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(context.body(), Account.class);
         Account newAccount = accountService.registerAccount(account);
@@ -64,13 +66,19 @@ public class SocialMediaController {
     private void getMessageByIdHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(context.body(), Message.class);
+        int message_id = Integer.parseInt(context.pathParam("message_id"));
         context.json(messageService.getMessageById(message.message_id));
-        if(message!=null){
-            context.json(mapper.writeValueAsString(message));
-        } else { 
+        if(message == null){
             context.status(400);
+        } else { 
+            context.json(mapper.writeValueAsString(message));
         }
     }
+
+    // private void getAllMessagesByUserHandler(Context context){
+    //     List<Message> messages = messageService.getAllMessagesByUser(1);
+    //     context.json(messages);
+    // }
 
     private void postMessageHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();

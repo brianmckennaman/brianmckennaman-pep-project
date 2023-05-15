@@ -4,7 +4,6 @@ import DAO.MessageDAO;
 import Model.Message;
 import java.util.List;
 
-import org.h2.value.ValueVarchar;
 
 public class MessageService {
     public MessageDAO messageDAO;
@@ -25,6 +24,13 @@ public class MessageService {
         return messageDAO.getMessageById(message_id);
     }
 
+    // public List<Message> getAllMessagesByUser(int posted_by){
+    //     if(message.postedby == null){
+    //         return null;
+    //     }
+    //     return messageDAO.getAllMessagesByUser(posted_by);
+    // }
+
     public Message addMessage(Message message){
         Message newMessage = messageDAO.createMessage(message);
         System.out.println(newMessage);
@@ -42,7 +48,7 @@ public class MessageService {
         if (oldMessage == null){
             return null;
         }
-        else if (oldMessage.message_text == ""){
+        if (oldMessage.message_text == ""){
             return null;
         }
         oldMessage.setMessage_text(message.getMessage_text());
@@ -52,7 +58,7 @@ public class MessageService {
 
     // public Message deleteMessage(int message_id) {
         
-    //     if(message_id == null){
+    //     if(message.message_id == null){
     //         return null;
     //     }
     //     return messageDAO.deleteMessage(message_id);

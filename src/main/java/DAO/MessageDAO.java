@@ -74,7 +74,7 @@ public class MessageDAO {
         return null;
     }
 
-    public List<Message> getMessageByUser(int posted_by){
+    public List<Message> getAllMessagesByUser(int posted_by){
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
         try {
