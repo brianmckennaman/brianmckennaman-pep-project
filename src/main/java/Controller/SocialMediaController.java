@@ -33,6 +33,7 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         app.post("/accounts", this::userRegistrationHandler);
         app.get("/messages", this::getAllMessagesHandler);
+        app.get("/messages/{message_id}", this::getMessageByIdHandler);
         app.post("/messages", this::postMessageHandler);
         app.put("/messages/{message_id}", this::updateMessageHandler);
         // app.delete("/messages/{message_id}" this::deleteMessageHandler);
@@ -58,6 +59,17 @@ public class SocialMediaController {
     private void getAllMessagesHandler(Context context) {
         List<Message> messages = messageService.getAllMessages();
         context.json(messages);
+    }
+
+    private void getMessageByIdHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(context.body(), Message.class);
+        context.json(messageService.getMessageById(message.message_id));
+        if(message!=null){
+            context.json(mapper.writeValueAsString(message));
+        } else { 
+            context.status(400);
+        }
     }
 
     private void postMessageHandler(Context context) throws JsonProcessingException{

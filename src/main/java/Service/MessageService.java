@@ -19,22 +19,25 @@ public class MessageService {
         return messageDAO.getAllMessages();
     }
 
-    // public Message addMessage(Message message){
-    //     Message newMessage = messageDAO.createMessage(message);
-    //     if(newMessage.message_text == ""){
-    //         return null;
-    //     }
-    //     if(newMessage.posted_by == null){
-    //         return null;
-    //     }
-    // }
+    public Message getMessageById(int message_id){
+        return messageDAO.getMessageById(message_id);
+    }
+
+    public Message addMessage(Message message){
+        Message newMessage = messageDAO.createMessage(message);
+        System.out.println(newMessage);
+        if(message.message_text == null){
+            return null;
+        }
+        return newMessage;
+    }
 
     public Message updateMessage(int message_id, Message message) {
         Message oldMessage = messageDAO.getMessageById(message_id);
         if (oldMessage == null){
             return null;
         }
-        else if (oldMessage.message_text == ""){
+        else if (oldMessage.message_text == null){
             return null;
         }
         oldMessage.setMessage_text(message.getMessage_text());
@@ -42,10 +45,11 @@ public class MessageService {
         return oldMessage;
     }
 
-    public Message deleteMessage(int message_id, Message message) {
-        if(message_id == null){
-            return null;
-        }
-        return messageDAO.deleteMessage(message_id, message);
-    }
+    // public Message deleteMessage(int message_id) {
+        
+    //     if(message_id == null){
+    //         return null;
+    //     }
+    //     return messageDAO.deleteMessage(message_id);
+    // }
 }
