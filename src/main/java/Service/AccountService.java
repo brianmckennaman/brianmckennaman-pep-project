@@ -17,6 +17,12 @@ public class AccountService {
 
     public Account registerAccount(Account account) {
         Account newAccount = accountDAO.userRegistration(account);
+        if(newAccount.username == account.username){
+            return null;
+        }
+        if(newAccount.username == ""){
+            return null;
+        } 
         return newAccount;
     }
 

@@ -4,6 +4,8 @@ import DAO.MessageDAO;
 import Model.Message;
 import java.util.List;
 
+import org.h2.value.ValueVarchar;
+
 public class MessageService {
     public MessageDAO messageDAO;
 
@@ -26,9 +28,12 @@ public class MessageService {
     public Message addMessage(Message message){
         Message newMessage = messageDAO.createMessage(message);
         System.out.println(newMessage);
-        if(message.message_text == null){
+        if(message.message_text == ""){
             return null;
         }
+        // if(message.message_text > 255){
+        //     return null;
+        // }
         return newMessage;
     }
 
@@ -37,7 +42,7 @@ public class MessageService {
         if (oldMessage == null){
             return null;
         }
-        else if (oldMessage.message_text == null){
+        else if (oldMessage.message_text == ""){
             return null;
         }
         oldMessage.setMessage_text(message.getMessage_text());
