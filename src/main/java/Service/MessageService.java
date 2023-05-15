@@ -19,13 +19,33 @@ public class MessageService {
         return messageDAO.getAllMessages();
     }
 
+    // public Message addMessage(Message message){
+    //     Message newMessage = messageDAO.createMessage(message);
+    //     if(newMessage.message_text == ""){
+    //         return null;
+    //     }
+    //     if(newMessage.posted_by == null){
+    //         return null;
+    //     }
+    // }
 
-    public Message addMessage(Message message){
-        Message checkMessage = messageDAO.getMessageById(message.getMessage_id());
-        if(checkMessage != null){
+    public Message updateMessage(int message_id, Message message) {
+        Message oldMessage = messageDAO.getMessageById(message_id);
+        if (oldMessage == null){
             return null;
         }
-        messageDAO.createMessage(message);
-        return message;
+        else if (oldMessage.message_text == ""){
+            return null;
+        }
+        oldMessage.setMessage_text(message.getMessage_text());
+        messageDAO.updateMessage(message_id, oldMessage);
+        return oldMessage;
+    }
+
+    public Message deleteMessage(int message_id, Message message) {
+        if(message_id == null){
+            return null;
+        }
+        return messageDAO.deleteMessage(message_id, message);
     }
 }

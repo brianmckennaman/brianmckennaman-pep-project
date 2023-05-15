@@ -31,9 +31,11 @@ public class SocialMediaController {
 
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.get("/accounts", this::userRegistrationHandler);
+        app.post("/accounts", this::userRegistrationHandler);
         app.get("/messages", this::getAllMessagesHandler);
         app.post("/messages", this::postMessageHandler);
+        app.put("/messages/{message_id}", this::updateMessageHandler);
+        // app.delete("/messages/{message_id}" this::deleteMessageHandler);
 
         return app;
     }
@@ -67,6 +69,23 @@ public class SocialMediaController {
         } else{
             context.status(400);
         }
+    }
+
+    private void updateMessageHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(context.body(), Message.class);
+        int message_id = Integer.parseInt(context.pathParam("message_id"));
+        Message updatedMessage = messageService.updateMessage(message_id, message);
+        System.out.println(updatedMessage);
+        if(updatedMessage == null) {
+            context.status(400);
+        } else{
+            context.json(mapper.writeValueAsString(updatedMessage));
+        }
+    }
+
+    private void deleteMessageHandler(Context context) throws JsonProcessingException {
+
     }
 
 
