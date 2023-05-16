@@ -21,15 +21,20 @@ public class MessageService {
     }
 
     public Message getMessageById(int message_id){
-        return messageDAO.getMessageById(message_id);
+        Message message = messageDAO.getMessageById(message_id);
+        // if(message == null){
+        //     return null;
+        // }
+        return message;
     }
 
-    // public List<Message> getAllMessagesByUser(int posted_by){
-    //     if(message.postedby == null){
-    //         return null;
-    //     }
-    //     return messageDAO.getAllMessagesByUser(posted_by);
-    // }
+    public List<Message> getAllMessagesByUser(int posted_by){
+        // Message message = messageDAO.getAllMessagesByUser(posted_by);
+        // if(message == null){
+        //     return null;
+        // }
+        return messageDAO.getAllMessagesByUser(posted_by);
+    }
 
     public Message addMessage(Message message){
         Message newMessage = messageDAO.createMessage(message);
@@ -48,11 +53,11 @@ public class MessageService {
         return oldMessage;
     }
 
-    // public Message deleteMessage(int message_id) {
+    public Message deleteMessage(int message_id) {
         
-    //     if(message.message_id == null){
-    //         return null;
-    //     }
-    //     return messageDAO.deleteMessage(message_id);
-    // }
+        // if(message.message_id == null){
+        //     return null;
+        // }
+        return messageDAO.deleteMessage(message_id);
+    }
 }
