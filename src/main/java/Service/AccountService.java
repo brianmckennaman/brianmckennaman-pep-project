@@ -21,8 +21,10 @@ public class AccountService {
         }
         if(newAccount.username == account.username){
             return null;
+        }
+        if(newAccount.password.length() < 4){
+            return null;
         } 
-        // if(newAccount.password < )
         return newAccount;
     }
 

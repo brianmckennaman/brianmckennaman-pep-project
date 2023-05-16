@@ -6,6 +6,8 @@ import Model.Account;
 import Model.Message;
 import Service.AccountService;
 import Service.MessageService;
+
+import java.sql.SQLException;
 import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,6 +59,22 @@ public class SocialMediaController {
             context.status(400);
         }
     }
+
+    // private void loginHandler(Context context) throws JsonProcessingException {
+    //     ObjectMapper mapper = new ObjectMapper();
+    //     Account account = mapper.readValue(context.body(), Account.class);
+    //     try {
+    //         Account checkExistAccount = accountService.getAccountByUsername(account.username);
+    //         if(checekExistAccount.password.equals(account.password)){
+    //             context.json(checkExistAccount);
+    //             context.status(200);
+    //         } else{
+    //             context.status(401);
+    //         }
+    //     } catch (SQLException e) {
+    //         context.
+    //     }
+    // }
     
     private void getAllMessagesHandler(Context context) {
         List<Message> messages = messageService.getAllMessages();
@@ -64,19 +82,18 @@ public class SocialMediaController {
     }
 
     private void getMessageByIdHandler(Context context) throws JsonProcessingException{
-        ObjectMapper mapper = new ObjectMapper();
-        Message message = mapper.readValue(context.body(), Message.class);
         int message_id = Integer.parseInt(context.pathParam("message_id"));
-        context.json(messageService.getMessageById(message.message_id));
+        Message message = messageService.getMessageById(message_id);
         if(message == null){
             context.status(400);
         } else { 
-            context.json(mapper.writeValueAsString(message));
+            context.json(message);
         }
     }
 
     // private void getAllMessagesByUserHandler(Context context){
-    //     List<Message> messages = messageService.getAllMessagesByUser(1);
+    //     int posted_by = Integer.parseInt(context.pathParam("posted_by"));
+    //     List<Message> messages = messageService.getAllMessagesByUser(posted_by);
     //     context.json(messages);
     // }
 
@@ -84,7 +101,7 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(context.body(), Message.class);
         Message postedMessage = messageService.addMessage(message);
-        if(postedMessage!=null) {
+        if(postedMessage!=null && postedMessage.message_text.length() < 254 && postedMessage.message_text != "") {
             context.json(mapper.writeValueAsString(postedMessage));
         } else{
             context.status(400);
@@ -97,10 +114,11 @@ public class SocialMediaController {
         int message_id = Integer.parseInt(context.pathParam("message_id"));
         Message updatedMessage = messageService.updateMessage(message_id, message);
         System.out.println(updatedMessage);
-        if(updatedMessage == null) {
-            context.status(400);
-        } else{
+        if(updatedMessage != null && updatedMessage.message_text.length() < 254 && updatedMessage.message_text != "") {
+            
             context.json(mapper.writeValueAsString(updatedMessage));
+        } else{
+            context.status(400);
         }
     }
 
