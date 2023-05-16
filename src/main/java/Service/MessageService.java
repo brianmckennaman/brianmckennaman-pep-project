@@ -38,14 +38,13 @@ public class MessageService {
 
     public Message updateMessage(int message_id, Message message) {
         Message oldMessage = messageDAO.getMessageById(message_id);
-        // if (oldMessage == null){
-        //     return null;
-        // }
-        // if (oldMessage.message_text == ""){
-        //     return null;
-        // }
+        if (oldMessage == null){
+            return null;
+        }
         oldMessage.setMessage_text(message.getMessage_text());
-        messageDAO.updateMessage(message_id, oldMessage);
+        if (oldMessage.message_text == ""){
+            return null;
+        }
         return oldMessage;
     }
 

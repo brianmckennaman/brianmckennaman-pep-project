@@ -97,18 +97,20 @@ public class MessageDAO {
         return messages;
     }
 
-    public void updateMessage(int message_id, Message message){
+    public Message updateMessage(Message message, int id){
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "UPDATE message SET message_text = ? WHERE message_id = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, message.message_text);
-            preparedStatement.setInt(2, message.message_id);
-            preparedStatement.executeUpdate();
+            preparedStatement.setString(1, message.getMessage_text());
+            preparedStatement.setInt(2, message.getMessage_id());
+            preparedStatement.executeQuery();
+            return message;
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
+        return null;
     }
 
     public Message deleteMessage(int message_id){
