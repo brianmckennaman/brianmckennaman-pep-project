@@ -40,7 +40,7 @@ public class SocialMediaController {
         // app.get("/messages/{posted_by}/messages", this::getAllMessagesByUserHandler);
         app.post("/messages", this::postMessageHandler);
         app.patch("/messages/{message_id}", this::updateMessageHandler);
-        // app.delete("/messages/{message_id}" this::deleteMessageHandler);
+        app.delete("/messages/{message_id}", this::deleteMessageHandler);
 
         return app;
     }
@@ -69,7 +69,7 @@ public class SocialMediaController {
     //             context.json(checkExistAccount);
     //             context.status(200);
     //         } else{
-    //             context.status(401);
+    //             context.status(400);
     //         }
     //     } catch (SQLException e) {
     //         context.
@@ -123,8 +123,14 @@ public class SocialMediaController {
     }
 
     private void deleteMessageHandler(Context context) throws JsonProcessingException {
-
+        int messageId = Integer.parseInt("message_id");
+        Message message = messageService.getMessageById(messageId);
+        if(message == null){
+            context.status(400);
+        } else {
+            context.json(message);
+        }
+        }
     }
 
 
-}
