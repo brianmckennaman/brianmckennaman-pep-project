@@ -49,17 +49,20 @@ public class SocialMediaController {
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
+
+    //  All tests are passing
     private void accountRegistrationHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(context.body(), Account.class);
         Account newAccount = accountService.registerAccount(account);
-        if(newAccount!=null) {
+        if(newAccount != null && newAccount.password.length() > 4 && newAccount.username != "") {
             context.json(mapper.writeValueAsString(newAccount));
         } else {
             context.status(400);
         }
     }
 
+    // Not finished, commented out in order to test other cases
     // private void loginHandler(Context context) throws JsonProcessingException {
     //     ObjectMapper mapper = new ObjectMapper();
     //     Account account = mapper.readValue(context.body(), Account.class);
@@ -76,21 +79,24 @@ public class SocialMediaController {
     //     }
     // }
     
+    // All tests are passing
     private void getAllMessagesHandler(Context context) {
         List<Message> messages = messageService.getAllMessages();
         context.json(messages);
     }
 
+    // Messagenotfound test still failing, 400 error
     private void getMessageByIdHandler(Context context) throws JsonProcessingException{
         int message_id = Integer.parseInt(context.pathParam("message_id"));
         Message message = messageService.getMessageById(message_id);
-        if(message == null){
-            context.status(400);
-        } else { 
+        if(message != null){
             context.json(message);
+        } else { 
+            context.status(400);
         }
     }
 
+    // All tests are passing
     private void getAllMessagesByUserHandler(Context context){
         int posted_by = Integer.parseInt(context.pathParam("posted_by"));
         List<Message> messages = messageService.getAllMessagesByUser(posted_by);
@@ -98,6 +104,7 @@ public class SocialMediaController {
         
     }
 
+    // All tests are passing
     private void postMessageHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(context.body(), Message.class);
@@ -109,6 +116,7 @@ public class SocialMediaController {
         }
     }
 
+    // All tests are passing
     private void updateMessageHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(context.body(), Message.class);
@@ -123,6 +131,7 @@ public class SocialMediaController {
         }
     }
 
+    // Tests still failing, 500 error
     private void deleteMessageHandler(Context context) throws JsonProcessingException {
         int messageId = Integer.parseInt("message_id");
         Message message = messageService.getMessageById(messageId);

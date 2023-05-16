@@ -29,10 +29,6 @@ public class MessageService {
     }
 
     public List<Message> getAllMessagesByUser(int posted_by){
-        // Message message = messageDAO.getAllMessagesByUser(posted_by);
-        // if(message == null){
-        //     return null;
-        // }
         return messageDAO.getAllMessagesByUser(posted_by);
     }
 
