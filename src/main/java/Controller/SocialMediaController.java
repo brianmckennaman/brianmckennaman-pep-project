@@ -85,14 +85,14 @@ public class SocialMediaController {
         context.json(messages);
     }
 
-    // Messagenotfound test still failing, 400 error
+    // All tests are passing
     private void getMessageByIdHandler(Context context) throws JsonProcessingException{
         int message_id = Integer.parseInt(context.pathParam("message_id"));
         Message message = messageService.getMessageById(message_id);
         if(message != null){
             context.json(message);
         } else { 
-            context.status(400);
+            context.status(200);
         }
     }
 
@@ -129,6 +129,7 @@ public class SocialMediaController {
         } else{
             context.status(400);
         }
+        
     }
 
     // Tests still failing, 500 error

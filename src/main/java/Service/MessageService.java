@@ -22,9 +22,6 @@ public class MessageService {
 
     public Message getMessageById(int message_id){
         Message message = messageDAO.getMessageById(message_id);
-        // if(message == null){
-        //     return null;
-        // }
         return message;
     }
 
