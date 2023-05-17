@@ -132,12 +132,12 @@ public class SocialMediaController {
         
     }
 
-    // Tests still failing, 500 error
+    // All tests passing
     private void deleteMessageHandler(Context context) throws JsonProcessingException {
-        int messageId = Integer.parseInt("message_id");
+        int messageId = Integer.parseInt(context.pathParam("message_id"));
         Message message = messageService.getMessageById(messageId);
         if(message == null){
-            context.status(400);
+            context.status(200);
         } else {
             context.json(message);
         }

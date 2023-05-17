@@ -113,6 +113,7 @@ public class MessageDAO {
         return null;
     }
 
+    // DAO
     public Message deleteMessage(int message_id){
         Connection connection = ConnectionUtil.getConnection();
         try{

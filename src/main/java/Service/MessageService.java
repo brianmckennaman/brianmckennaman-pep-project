@@ -46,11 +46,8 @@ public class MessageService {
         return oldMessage;
     }
 
+    // Service
     public Message deleteMessage(int message_id) {
-        
-        // if(message.message_id == null){
-        //     return null;
-        // }
         return messageDAO.deleteMessage(message_id);
     }
 }
