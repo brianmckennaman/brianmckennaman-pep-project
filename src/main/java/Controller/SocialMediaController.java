@@ -34,7 +34,7 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.post("/register", this::accountRegistrationHandler);
-        // app.post("/login", this:loginHandler);
+        app.post("/login", this::loginHandler);
         app.get("/messages", this::getAllMessagesHandler);
         app.get("/messages/{message_id}", this::getMessageByIdHandler);
         app.get("/accounts/{posted_by}/messages", this::getAllMessagesByUserHandler);
@@ -63,21 +63,18 @@ public class SocialMediaController {
     }
 
     // Not finished, commented out in order to test other cases
-    // private void loginHandler(Context context) throws JsonProcessingException {
-    //     ObjectMapper mapper = new ObjectMapper();
-    //     Account account = mapper.readValue(context.body(), Account.class);
-    //     try {
-    //         Account checkExistAccount = accountService.getAccountByUsername(account.username);
-    //         if(checekExistAccount.password.equals(account.password)){
-    //             context.json(checkExistAccount);
-    //             context.status(200);
-    //         } else{
-    //             context.status(400);
-    //         }
-    //     } catch (SQLException e) {
-    //         context.
-    //     }
-    // }
+    private void loginHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(context.body(), Account.class);
+        Account newLogin = accountService.getAccountByUsername(account);
+        if(newLogin != null && newLogin.getPassword().equals(account.getPassword())){
+            context.json(mapper.writeValueAsString(newLogin));
+        } else{
+            context.status(401);
+        }
+            
+        
+    }
     
     // All tests are passing
     private void getAllMessagesHandler(Context context) {

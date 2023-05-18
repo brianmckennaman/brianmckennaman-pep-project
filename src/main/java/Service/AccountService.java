@@ -19,5 +19,13 @@ public class AccountService {
         return newAccount;
     }
 
+    public Account userLogin(Account account) {
+        return accountDAO.userLogin(account);
+    }
+
+    public Account getAccountByUsername(Account account){
+        return accountDAO.getAccountByUsername(account.getUsername());
+    }
+
     
 }
